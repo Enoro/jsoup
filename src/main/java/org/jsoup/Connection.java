@@ -27,23 +27,13 @@ public interface Connection {
     /**
      * GET and POST http methods.
      */
-    enum Method {
-        GET(false), POST(true), PUT(true), DELETE(false), PATCH(true);
-
-        private final boolean hasBody;
-
-        Method(boolean hasBody) {
-            this.hasBody = hasBody;
-        }
+  
 
         /**
          * Check if this HTTP method has/needs a request body
          * @return if body needed
          */
-        public final boolean hasBody() {
-            return hasBody;
-        }
-    }
+   
 
     /**
      * Set the request URL to fetch. The protocol must be HTTP or HTTPS.

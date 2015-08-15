@@ -12,6 +12,7 @@ import org.jsoup.nodes.Element;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -219,8 +220,8 @@ public class Whitelist {
      */
     public Whitelist removeTags(String... tags) {
         Validate.notNull(tags);
-
-        for(String tag: tags) {
+        for (int i = 0; i < tags.length; i++) {
+            String tag = tags[i];            
             Validate.notEmpty(tag);
             TagName tagName = TagName.valueOf(tag);
 
@@ -292,7 +293,8 @@ public class Whitelist {
 
         TagName tagName = TagName.valueOf(tag);
         Set<AttributeKey> attributeSet = new HashSet<AttributeKey>();
-        for (String key : keys) {
+        for (int i = 0; i < keys.length; i++) {
+            String key = keys[i];            
             Validate.notEmpty(key);
             attributeSet.add(AttributeKey.valueOf(key));
         }
@@ -304,13 +306,18 @@ public class Whitelist {
                 attributes.remove(tagName);
         }
         if(tag.equals(":all")) // Attribute needs to be removed from all individually set tags
-            for(TagName name: attributes.keySet()) {
+        {
+            Iterator entries=attributes.keySet().iterator();
+            //for(TagName name: attributes.keySet()) {
+            while(entries.hasNext()){//jdk 1.4 compatible
+                TagName name=(TagName)entries.next();
                 Set<AttributeKey> currentSet = attributes.get(name);
                 currentSet.removeAll(attributeSet);
 
                 if(currentSet.isEmpty()) // Remove tag from attribute map if no attributes are allowed for tag
                     attributes.remove(name);
             }
+        }
         return this;
     }
 

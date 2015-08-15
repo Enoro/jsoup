@@ -120,7 +120,7 @@ public class Attribute implements Map.Entry<String, String>, Cloneable  {
      */
     protected final boolean shouldCollapseAttribute(Document.OutputSettings out) {
         return ("".equals(value) || value.equalsIgnoreCase(key))
-                && out.syntax() == Document.OutputSettings.Syntax.html
+                && out.syntax() == Syntax.html
                 && isBooleanAttribute();
     }
 

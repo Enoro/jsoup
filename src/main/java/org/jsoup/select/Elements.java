@@ -41,9 +41,12 @@ public class Elements extends ArrayList<Element> {
     @Override
 	public Elements clone() {
         Elements clone = new Elements(size());
-
-        for(Element e : this)
+       Iterator entries=this.iterator();        
+        //for(Element e : this)
+       while(entries.hasNext()){//jdk compatible
+           Element e=(Element)entries.next();
     		clone.add(e.clone());
+       }
     	
     	return clone;
 	}

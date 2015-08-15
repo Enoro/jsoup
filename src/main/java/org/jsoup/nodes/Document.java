@@ -309,9 +309,9 @@ public class Document extends Element {
      */
     private void ensureMetaCharsetElement() {
         if (updateMetaCharset) {
-            OutputSettings.Syntax syntax = outputSettings().syntax();
+            Syntax syntax = outputSettings().syntax();
 
-            if (syntax == OutputSettings.Syntax.html) {
+            if (syntax == Syntax.html) {
                 Element metaCharset = select("meta[charset]").first();
 
                 if (metaCharset != null) {
@@ -326,7 +326,7 @@ public class Document extends Element {
 
                 // Remove obsolete elements
                 select("meta[name=charset]").remove();
-            } else if (syntax == OutputSettings.Syntax.xml) {
+            } else if (syntax == Syntax.xml) {
                 Node node = childNodes().get(0);
 
                 if (node instanceof XmlDeclaration) {
@@ -367,8 +367,7 @@ public class Document extends Element {
     public static class OutputSettings implements Cloneable {
         /**
          * The output serialization syntax.
-         */
-        public enum Syntax {html, xml}
+         */       
 
         private Entities.EscapeMode escapeMode = Entities.EscapeMode.base;
         private Charset charset = Charset.forName("UTF-8");

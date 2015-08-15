@@ -22,6 +22,7 @@ import java.security.cert.X509Certificate;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
+import org.jsoup.Method;
 
 /**
  * Implementation of {@link Connection}.

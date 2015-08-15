@@ -1143,7 +1143,7 @@ public class Element extends Node {
 
         // selfclosing includes unknown tags, isEmpty defines tags that are always empty
         if (childNodes.isEmpty() && tag.isSelfClosing()) {
-            if (out.syntax() == Document.OutputSettings.Syntax.html && tag.isEmpty())
+            if (out.syntax() == Syntax.html && tag.isEmpty())
                 accum.append('>');
             else
                 accum.append(" />"); // <img> in html, <img /> in xml

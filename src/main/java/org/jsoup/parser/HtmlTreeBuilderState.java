@@ -4,6 +4,7 @@ import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * The Tree Builder's current state. Each state embodies the processing for the state, and transitions to other states.
@@ -319,7 +320,10 @@ enum HtmlTreeBuilderState {
                         tb.error(this);
                         // merge attributes onto real html
                         Element html = tb.getStack().get(0);
-                        for (Attribute attribute : startTag.getAttributes()) {
+                        Iterator entries=startTag.getAttributes().iterator();
+                        //for (Attribute attribute : startTag.getAttributes()) {
+                        while(entries.hasNext()){
+                            Attribute attribute=(Attribute)entries.next();
                             if (!html.hasAttr(attribute.getKey()))
                                 html.attributes().put(attribute);
                         }
@@ -334,7 +338,10 @@ enum HtmlTreeBuilderState {
                         } else {
                             tb.framesetOk(false);
                             Element body = stack.get(1);
-                            for (Attribute attribute : startTag.getAttributes()) {
+                            Iterator entries=startTag.getAttributes().iterator();
+                            while(entries.hasNext()){
+                                Attribute attribute=(Attribute)entries.next();
+                           // for (Attribute attribute : startTag.getAttributes()) {
                                 if (!body.hasAttr(attribute.getKey()))
                                     body.attributes().put(attribute);
                             }
@@ -481,7 +488,10 @@ enum HtmlTreeBuilderState {
 
                         // input
                         Attributes inputAttribs = new Attributes();
-                        for (Attribute attr : startTag.attributes) {
+                        Iterator entries=startTag.attributes.iterator();
+                        while(entries.hasNext()){
+                            Attribute attr=(Attribute)entries.next();
+                        //for (Attribute attr : startTag.attributes) {
                             if (!StringUtil.inSorted(attr.getKey(), Constants.InBodyStartInputAttribs))
                                 inputAttribs.put(attr);
                         }

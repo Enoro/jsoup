@@ -205,8 +205,14 @@ public class Attributes implements Iterable<Attribute>, Cloneable {
             throw new RuntimeException(e);
         }
         clone.attributes = new LinkedHashMap<String, Attribute>(attributes.size());
-        for (Attribute attribute: this)
+        //for (Attribute attribute: this){
+        Iterator entries=this.iterator();
+        while(entries.hasNext()){
+            Attribute attribute=(Attribute)entries.next();
             clone.attributes.put(attribute.getKey(), attribute.clone());
+        }
+        
+            
         return clone;
     }
 

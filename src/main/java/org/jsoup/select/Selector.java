@@ -4,6 +4,7 @@ import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Element;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 
 /**
@@ -128,8 +129,10 @@ public class Selector {
         Validate.notNull(roots);
         Evaluator evaluator = QueryParser.parse(query);
         LinkedHashSet<Element> elements = new LinkedHashSet<Element>();
-
-        for (Element root : roots) {
+        Iterator entries=roots.iterator();
+        while (entries.hasNext()){
+            Element root=(Element)entries.next();
+            //for (Element root : roots) {
             elements.addAll(select(evaluator, root));
         }
         return new Elements(elements);

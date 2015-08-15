@@ -36,7 +36,7 @@ abstract class Token {
         final StringBuilder systemIdentifier = new StringBuilder();
         boolean forceQuirks = false;
 
-        Doctype() {
+        public Doctype() {
             type = TokenType.Doctype;
         }
 

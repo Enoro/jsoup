@@ -8,7 +8,7 @@ import java.nio.charset.Charset;
 import org.jsoup.Jsoup;
 import org.jsoup.TextUtil;
 import org.jsoup.integration.ParseTest;
-import org.jsoup.nodes.Document.OutputSettings.Syntax;
+import org.jsoup.nodes.Syntax;
 import static org.junit.Assert.*;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -122,7 +122,7 @@ public class DocumentTest {
                 " </body>\n" +
                 "</html>", doc.html());
 
-        doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+        doc.outputSettings().syntax(Syntax.xml);
         assertEquals("<!DOCTYPE html>\n" +
                 "<html>\n" +
                 " <head></head>\n" +

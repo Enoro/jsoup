@@ -17,7 +17,7 @@ public class XmlTreeBuilder extends TreeBuilder {
     protected void initialiseParse(String input, String baseUri, ParseErrorList errors) {
         super.initialiseParse(input, baseUri, errors);
         stack.add(doc); // place the document onto the stack. differs from HtmlTreeBuilder (not on stack)
-        doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+        doc.outputSettings().syntax(Syntax.xml);
     }
 
     @Override

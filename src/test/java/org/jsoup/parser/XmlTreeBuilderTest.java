@@ -16,7 +16,7 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import static org.jsoup.nodes.Document.OutputSettings.Syntax;
+import  org.jsoup.nodes.Syntax;
 import static org.junit.Assert.*;
 
 /**
