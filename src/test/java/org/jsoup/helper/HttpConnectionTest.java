@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.*;
 import java.net.URL;
 import java.net.MalformedURLException;
+import org.jsoup.Method;
 
 public class HttpConnectionTest {
     /* most actual network http connection tests are in integration */
@@ -111,9 +112,9 @@ public class HttpConnectionTest {
 
     @Test public void method() {
         Connection con = HttpConnection.connect("http://example.com/");
-        assertEquals(Connection.Method.GET, con.request().method());
-        con.method(Connection.Method.POST);
-        assertEquals(Connection.Method.POST, con.request().method());
+        assertEquals(Method.GET, con.request().method());
+        con.method(Method.POST);
+        assertEquals(Method.POST, con.request().method());
     }
 
     @Test(expected=IllegalArgumentException.class) public void throwsOnOdddData() {

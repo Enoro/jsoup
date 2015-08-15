@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.junit.Test;
 
 import java.util.List;
+import org.jsoup.Method;
 
 import static org.junit.Assert.*;
 
@@ -54,14 +55,14 @@ public class FormElementTest {
         FormElement form = ((FormElement) doc.select("form").first());
         Connection con = form.submit();
 
-        assertEquals(Connection.Method.GET, con.request().method());
+        assertEquals(Method.GET, con.request().method());
         assertEquals("http://example.com/search", con.request().url().toExternalForm());
         List<Connection.KeyVal> dataList = (List<Connection.KeyVal>) con.request().data();
         assertEquals("q=jsoup", dataList.get(0).toString());
 
         doc.select("form").attr("method", "post");
         Connection con2 = form.submit();
-        assertEquals(Connection.Method.POST, con2.request().method());
+        assertEquals(Method.POST, con2.request().method());
     }
 
     @Test public void actionWithNoValue() {

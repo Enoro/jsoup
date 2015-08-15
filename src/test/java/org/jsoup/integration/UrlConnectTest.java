@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
+import org.jsoup.Method;
 import static org.junit.Assert.*;
 
 /**
@@ -128,7 +129,7 @@ public class UrlConnectTest {
         Connection.Response res = Jsoup.connect(echoURL)
                 .data("uname", "Jsoup", "uname", "Jonathan", "百", "度一下")
                 .cookie("auth", "token")
-                .method(Connection.Method.PUT)
+                .method(Method.PUT)
                 .execute();
 
         Document doc = res.parse();
@@ -161,10 +162,10 @@ public class UrlConnectTest {
     public void postRedirectsFetchWithGet() throws IOException {
         Connection con = Jsoup.connect("http://direct.infohound.net/tools/302.pl")
                 .data("Argument", "Riposte")
-                .method(Connection.Method.POST);
+                .method(Method.POST);
         Connection.Response res = con.execute();
         assertEquals("http://jsoup.org", res.url().toExternalForm());
-        assertEquals(Connection.Method.GET, res.method());
+        assertEquals(Method.GET, res.method());
     }
 
     @Test
