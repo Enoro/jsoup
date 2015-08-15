@@ -273,7 +273,7 @@ abstract class Token {
 
     final static class EOF extends Token {
         EOF() {
-            type = Token.TokenType.EOF;
+            type = TokenType.EOF;
         }
 
         @Override
@@ -325,13 +325,5 @@ abstract class Token {
     final boolean isEOF() {
         return type == TokenType.EOF;
     }
-
-    enum TokenType {
-        Doctype,
-        StartTag,
-        EndTag,
-        Comment,
-        Character,
-        EOF
-    }
+    
 }

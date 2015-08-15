@@ -50,7 +50,7 @@ abstract class TreeBuilder {
             process(token);
             token.reset();
 
-            if (token.type == Token.TokenType.EOF)
+            if (token.type == TokenType.EOF)
                 break;
         }
     }

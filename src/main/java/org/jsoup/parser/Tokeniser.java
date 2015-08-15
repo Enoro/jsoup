@@ -71,12 +71,12 @@ final class Tokeniser {
         emitPending = token;
         isEmitPending = true;
 
-        if (token.type == Token.TokenType.StartTag) {
+        if (token.type == TokenType.StartTag) {
             Token.StartTag startTag = (Token.StartTag) token;
             lastStartTag = startTag.tagName;
             if (startTag.selfClosing)
                 selfClosingFlagAcknowledged = false;
-        } else if (token.type == Token.TokenType.EndTag) {
+        } else if (token.type == TokenType.EndTag) {
             Token.EndTag endTag = (Token.EndTag) token;
             if (endTag.attributes != null)
                 error("Attributes incorrectly present on end tag");
