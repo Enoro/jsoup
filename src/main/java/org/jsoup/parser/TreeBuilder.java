@@ -19,8 +19,8 @@ abstract class TreeBuilder {
     protected Token currentToken; // currentToken is used only for error tracking.
     protected ParseErrorList errors; // null when not tracking errors
 
-    private Token.StartTag start = new Token.StartTag(); // start tag to process
-    private Token.EndTag end  = new Token.EndTag();
+    private TokenStartTag start = new TokenStartTag(); // start tag to process
+    private EndTag end  = new EndTag();
 
     protected void initialiseParse(String input, String baseUri, ParseErrorList errors) {
         Validate.notNull(input, "String input must not be null");
@@ -59,14 +59,14 @@ abstract class TreeBuilder {
 
     protected boolean processStartTag(String name) {
         if (currentToken == start) { // don't recycle an in-use token
-            return process(new Token.StartTag().name(name));
+            return process(new TokenStartTag().name(name));
         }
         return process(start.reset().name(name));
     }
 
     public boolean processStartTag(String name, Attributes attrs) {
         if (currentToken == start) { // don't recycle an in-use token
-            return process(new Token.StartTag().nameAttr(name, attrs));
+            return process(new TokenStartTag().nameAttr(name, attrs));
         }
         start.reset();
         start.nameAttr(name, attrs);
@@ -75,7 +75,7 @@ abstract class TreeBuilder {
 
     protected boolean processEndTag(String name) {
         if (currentToken == end) { // don't recycle an in-use token
-            return process(new Token.EndTag().name(name));
+            return process(new EndTag().name(name));
         }
         return process(end.reset().name(name));
     }

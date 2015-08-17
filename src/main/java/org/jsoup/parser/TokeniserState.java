@@ -21,7 +21,7 @@ enum TokeniserState {
                     t.emit(r.consume());
                     break;
                 case eof:
-                    t.emit(new Token.EOF());
+                    t.emit(new TokenEOF());
                     break;
                 default:
                     String data = r.consumeData();
@@ -57,7 +57,7 @@ enum TokeniserState {
                     t.emit(replacementChar);
                     break;
                 case eof:
-                    t.emit(new Token.EOF());
+                    t.emit(new TokenEOF());
                     break;
                 default:
                     String data = r.consumeToAny('&', '<', nullChar);
@@ -88,7 +88,7 @@ enum TokeniserState {
                     t.emit(replacementChar);
                     break;
                 case eof:
-                    t.emit(new Token.EOF());
+                    t.emit(new TokenEOF());
                     break;
                 default:
                     String data = r.consumeToAny('<', nullChar);
@@ -109,7 +109,7 @@ enum TokeniserState {
                     t.emit(replacementChar);
                     break;
                 case eof:
-                    t.emit(new Token.EOF());
+                    t.emit(new TokenEOF());
                     break;
                 default:
                     String data = r.consumeToAny('<', nullChar);
@@ -127,7 +127,7 @@ enum TokeniserState {
                     t.emit(replacementChar);
                     break;
                 case eof:
-                    t.emit(new Token.EOF());
+                    t.emit(new TokenEOF());
                     break;
                 default:
                     String data = r.consumeTo(nullChar);
@@ -944,7 +944,7 @@ enum TokeniserState {
             // todo: handle bogus comment starting from eof. when does that trigger?
             // rewind to capture character that lead us here
             r.unconsume();
-            Token.Comment comment = new Token.Comment();
+            TokenComment comment = new TokenComment();
             comment.bogus = true;
             comment.data.append(r.consumeTo('>'));
             // todo: replace nullChar with replaceChar

@@ -26,12 +26,12 @@ final class Tokeniser {
     private StringBuilder charsBuilder = new StringBuilder(1024); // buffers characters to output as one token, if more than one emit per read
     StringBuilder dataBuffer = new StringBuilder(1024); // buffers data looking for </script>
 
-    Token.Tag tagPending; // tag we are building up
-    Token.StartTag startPending = new Token.StartTag();
-    Token.EndTag endPending = new Token.EndTag();
-    Token.Character charPending = new Token.Character();
-    Token.Doctype doctypePending = new Token.Doctype(); // doctype building up
-    Token.Comment commentPending = new Token.Comment(); // comment building up
+    TokenTag tagPending; // tag we are building up
+    TokenStartTag startPending = new TokenStartTag();
+    EndTag endPending = new EndTag();
+    TokenCharacter charPending = new TokenCharacter();
+    TokenDoctype doctypePending = new TokenDoctype(); // doctype building up
+    TokenComment commentPending = new TokenComment(); // comment building up
     private String lastStartTag; // the last start tag emitted, to test appropriate end tag
     private boolean selfClosingFlagAcknowledged = true;
 
@@ -72,12 +72,12 @@ final class Tokeniser {
         isEmitPending = true;
 
         if (token.type == TokenType.StartTag) {
-            Token.StartTag startTag = (Token.StartTag) token;
+            TokenStartTag startTag = (TokenStartTag) token;
             lastStartTag = startTag.tagName;
             if (startTag.selfClosing)
                 selfClosingFlagAcknowledged = false;
         } else if (token.type == TokenType.EndTag) {
-            Token.EndTag endTag = (Token.EndTag) token;
+            EndTag endTag = (EndTag) token;
             if (endTag.attributes != null)
                 error("Attributes incorrectly present on end tag");
         }
@@ -187,7 +187,7 @@ final class Tokeniser {
         }
     }
 
-    Token.Tag createTagPending(boolean start) {
+    TokenTag createTagPending(boolean start) {
         tagPending = start ? startPending.reset() : endPending.reset();
         return tagPending;
     }

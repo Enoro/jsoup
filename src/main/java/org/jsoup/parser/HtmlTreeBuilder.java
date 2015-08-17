@@ -38,7 +38,7 @@ public class HtmlTreeBuilder extends TreeBuilder {
     private Element contextElement; // fragment parse context -- could be null even if fragment parsing
     private ArrayList<Element> formattingElements = new ArrayList<Element>(); // active (open) formatting elements
     private List<String> pendingTableCharacters = new ArrayList<String>(); // chars in table to be shifted out
-    private Token.EndTag emptyEnd = new Token.EndTag(); // reused empty end tag
+    private EndTag emptyEnd = new EndTag(); // reused empty end tag
 
     private boolean framesetOk = true; // if ok to go into frameset
     private boolean fosterInserts = false; // if next inserts should be fostered
@@ -168,7 +168,7 @@ public class HtmlTreeBuilder extends TreeBuilder {
             errors.add(new ParseError(reader.pos(), "Unexpected token [%s] when in state [%s]", currentToken.tokenType(), state));
     }
 
-    Element insert(Token.StartTag startTag) {
+    Element insert(TokenStartTag startTag) {
         // handle empty unknown tags
         // when the spec expects an empty tag, will directly hit insertEmpty, so won't generate this fake end tag.
         if (startTag.isSelfClosing()) {
@@ -195,7 +195,7 @@ public class HtmlTreeBuilder extends TreeBuilder {
         stack.add(el);
     }
 
-    Element insertEmpty(Token.StartTag startTag) {
+    Element insertEmpty(TokenStartTag startTag) {
         Tag tag = Tag.valueOf(startTag.name());
         Element el = new Element(tag, baseUri, startTag.attributes);
         insertNode(el);
@@ -211,7 +211,7 @@ public class HtmlTreeBuilder extends TreeBuilder {
         return el;
     }
 
-    FormElement insertForm(Token.StartTag startTag, boolean onStack) {
+    FormElement insertForm(TokenStartTag startTag, boolean onStack) {
         Tag tag = Tag.valueOf(startTag.name());
         FormElement el = new FormElement(tag, baseUri, startTag.attributes);
         setFormElement(el);
@@ -221,12 +221,12 @@ public class HtmlTreeBuilder extends TreeBuilder {
         return el;
     }
 
-    void insert(Token.Comment commentToken) {
+    void insert(TokenComment commentToken) {
         Comment comment = new Comment(commentToken.getData(), baseUri);
         insertNode(comment);
     }
 
-    void insert(Token.Character characterToken) {
+    void insert(TokenCharacter characterToken) {
         Node node;
         // characters in script and style go in as datanodes, not text nodes
         String tagName = currentElement().tagName();

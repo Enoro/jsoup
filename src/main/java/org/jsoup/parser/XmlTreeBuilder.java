@@ -51,7 +51,7 @@ public class XmlTreeBuilder extends TreeBuilder {
         currentElement().appendChild(node);
     }
 
-    Element insert(Token.StartTag startTag) {
+    Element insert(TokenStartTag startTag) {
         Tag tag = Tag.valueOf(startTag.name());
         // todo: wonder if for xml parsing, should treat all tags as unknown? because it's not html.
         Element el = new Element(tag, baseUri, startTag.attributes);
@@ -66,7 +66,7 @@ public class XmlTreeBuilder extends TreeBuilder {
         return el;
     }
 
-    void insert(Token.Comment commentToken) {
+    void insert(TokenComment commentToken) {
         Comment comment = new Comment(commentToken.getData(), baseUri);
         Node insert = comment;
         if (commentToken.bogus) { // xml declarations are emitted as bogus comments (which is right for html, but not xml)
@@ -79,12 +79,12 @@ public class XmlTreeBuilder extends TreeBuilder {
         insertNode(insert);
     }
 
-    void insert(Token.Character characterToken) {
+    void insert(TokenCharacter characterToken) {
         Node node = new TextNode(characterToken.getData(), baseUri);
         insertNode(node);
     }
 
-    void insert(Token.Doctype d) {
+    void insert(TokenDoctype d) {
         DocumentType doctypeNode = new DocumentType(d.getName(), d.getPublicIdentifier(), d.getSystemIdentifier(), baseUri);
         insertNode(doctypeNode);
     }
@@ -95,7 +95,7 @@ public class XmlTreeBuilder extends TreeBuilder {
      *
      * @param endTag
      */
-    private void popStackToClose(Token.EndTag endTag) {
+    private void popStackToClose(EndTag endTag) {
         String elName = endTag.name();
         Element firstFound = null;
 

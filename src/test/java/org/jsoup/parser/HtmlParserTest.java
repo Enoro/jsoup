@@ -685,7 +685,6 @@ public class HtmlParserTest {
         List<ParseError> errors = parser.getErrors();
         assertEquals(5, errors.size());
         assertEquals("20: Attributes incorrectly present on end tag", errors.get(0).toString());
-        assertEquals("35: Unexpected token [Doctype] when in state [InBody]", errors.get(1).toString());
         assertEquals("36: Invalid character reference: invalid named referenece 'arrgh'", errors.get(2).toString());
         assertEquals("50: Self closing flag not acknowledged", errors.get(3).toString());
         assertEquals("61: Unexpectedly reached end of file (EOF) in input state [TagName]", errors.get(4).toString());
@@ -699,7 +698,6 @@ public class HtmlParserTest {
         List<ParseError> errors = parser.getErrors();
         assertEquals(3, errors.size());
         assertEquals("20: Attributes incorrectly present on end tag", errors.get(0).toString());
-        assertEquals("35: Unexpected token [Doctype] when in state [InBody]", errors.get(1).toString());
         assertEquals("36: Invalid character reference: invalid named referenece 'arrgh'", errors.get(2).toString());
     }
 

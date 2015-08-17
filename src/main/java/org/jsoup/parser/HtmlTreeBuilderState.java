@@ -19,7 +19,7 @@ enum HtmlTreeBuilderState {
             } else if (t.isDoctype()) {
                 // todo: parse error check on expected doctypes
                 // todo: quirk state check on doctype ids
-                Token.Doctype d = t.asDoctype();
+                TokenDoctype d = t.asDoctype();
                 DocumentType doctype = new DocumentType(d.getName(), d.getPublicIdentifier(), d.getSystemIdentifier(), tb.getBaseUri());
                 tb.getDocument().appendChild(doctype);
                 if (d.isForceQuirks())
@@ -104,7 +104,7 @@ enum HtmlTreeBuilderState {
                     tb.error(this);
                     return false;
                 case StartTag:
-                    Token.StartTag start = t.asStartTag();
+                    TokenStartTag start = t.asStartTag();
                     String name = start.name();
                     if (name.equals("html")) {
                         return InBody.process(t, tb);
@@ -139,7 +139,7 @@ enum HtmlTreeBuilderState {
                     }
                     break;
                 case EndTag:
-                    Token.EndTag end = t.asEndTag();
+                    EndTag end = t.asEndTag();
                     name = end.name();
                     if (name.equals("head")) {
                         tb.pop();
@@ -187,7 +187,7 @@ enum HtmlTreeBuilderState {
 
         private boolean anythingElse(Token t, HtmlTreeBuilder tb) {
             tb.error(this);
-            tb.insert(new Token.Character().data(t.toString()));
+            tb.insert(new TokenCharacter().data(t.toString()));
             return true;
         }
     },
@@ -200,7 +200,7 @@ enum HtmlTreeBuilderState {
             } else if (t.isDoctype()) {
                 tb.error(this);
             } else if (t.isStartTag()) {
-                Token.StartTag startTag = t.asStartTag();
+                TokenStartTag startTag = t.asStartTag();
                 String name = startTag.name();
                 if (name.equals("html")) {
                     return tb.process(t, InBody);
@@ -246,7 +246,7 @@ enum HtmlTreeBuilderState {
         boolean process(Token t, HtmlTreeBuilder tb) {
             switch (t.type) {
                 case Character: {
-                    Token.Character c = t.asCharacter();
+                    TokenCharacter c = t.asCharacter();
                     if (c.getData().equals(nullString)) {
                         // todo confirm that check
                         tb.error(this);
@@ -270,7 +270,7 @@ enum HtmlTreeBuilderState {
                     return false;
                 }
                 case StartTag:
-                    Token.StartTag startTag = t.asStartTag();
+                    TokenStartTag startTag = t.asStartTag();
                     String name = startTag.name();
                     if (name.equals("a")) {
                         if (tb.getActiveFormattingElement("a") != null) {
@@ -484,7 +484,7 @@ enum HtmlTreeBuilderState {
                                 startTag.attributes.get("prompt") :
                                 "This is a searchable index. Enter search keywords: ";
 
-                        tb.process(new Token.Character().data(prompt));
+                        tb.process(new TokenCharacter().data(prompt));
 
                         // input
                         Attributes inputAttribs = new Attributes();
@@ -564,7 +564,7 @@ enum HtmlTreeBuilderState {
                     break;
 
                 case EndTag:
-                    Token.EndTag endTag = t.asEndTag();
+                    EndTag endTag = t.asEndTag();
                     name = endTag.name();
                     if (StringUtil.inSorted(name, Constants.InBodyEndAdoptionFormatters)) {
                         // Adoption Agency Algorithm.
@@ -822,7 +822,7 @@ enum HtmlTreeBuilderState {
                 tb.error(this);
                 return false;
             } else if (t.isStartTag()) {
-                Token.StartTag startTag = t.asStartTag();
+                TokenStartTag startTag = t.asStartTag();
                 String name = startTag.name();
                 if (name.equals("caption")) {
                     tb.clearStackToTableContext();
@@ -868,7 +868,7 @@ enum HtmlTreeBuilderState {
                 }
                 return true; // todo: check if should return processed http://www.whatwg.org/specs/web-apps/current-work/multipage/tree-construction.html#parsing-main-intable
             } else if (t.isEndTag()) {
-                Token.EndTag endTag = t.asEndTag();
+                EndTag endTag = t.asEndTag();
                 String name = endTag.name();
 
                 if (name.equals("table")) {
@@ -912,7 +912,7 @@ enum HtmlTreeBuilderState {
         boolean process(Token t, HtmlTreeBuilder tb) {
             switch (t.type) {
                 case Character:
-                    Token.Character c = t.asCharacter();
+                    TokenCharacter c = t.asCharacter();
                     if (c.getData().equals(nullString)) {
                         tb.error(this);
                         return false;
@@ -929,13 +929,13 @@ enum HtmlTreeBuilderState {
                                 tb.error(this);
                                 if (StringUtil.in(tb.currentElement().nodeName(), "table", "tbody", "tfoot", "thead", "tr")) {
                                     tb.setFosterInserts(true);
-                                    tb.process(new Token.Character().data(character), InBody);
+                                    tb.process(new TokenCharacter().data(character), InBody);
                                     tb.setFosterInserts(false);
                                 } else {
-                                    tb.process(new Token.Character().data(character), InBody);
+                                    tb.process(new TokenCharacter().data(character), InBody);
                                 }
                             } else
-                                tb.insert(new Token.Character().data(character));
+                                tb.insert(new TokenCharacter().data(character));
                         }
                         tb.newPendingTableCharacters();
                     }
@@ -948,7 +948,7 @@ enum HtmlTreeBuilderState {
     InCaption {
         boolean process(Token t, HtmlTreeBuilder tb) {
             if (t.isEndTag() && t.asEndTag().name().equals("caption")) {
-                Token.EndTag endTag = t.asEndTag();
+                EndTag endTag = t.asEndTag();
                 String name = endTag.name();
                 if (!tb.inTableScope(name)) {
                     tb.error(this);
@@ -994,7 +994,7 @@ enum HtmlTreeBuilderState {
                     tb.error(this);
                     break;
                 case StartTag:
-                    Token.StartTag startTag = t.asStartTag();
+                    TokenStartTag startTag = t.asStartTag();
                     String name = startTag.name();
                     if (name.equals("html"))
                         return tb.process(t, InBody);
@@ -1004,7 +1004,7 @@ enum HtmlTreeBuilderState {
                         return anythingElse(t, tb);
                     break;
                 case EndTag:
-                    Token.EndTag endTag = t.asEndTag();
+                    EndTag endTag = t.asEndTag();
                     name = endTag.name();
                     if (name.equals("colgroup")) {
                         if (tb.currentElement().nodeName().equals("html")) { // frag case
@@ -1039,7 +1039,7 @@ enum HtmlTreeBuilderState {
         boolean process(Token t, HtmlTreeBuilder tb) {
             switch (t.type) {
                 case StartTag:
-                    Token.StartTag startTag = t.asStartTag();
+                    TokenStartTag startTag = t.asStartTag();
                     String name = startTag.name();
                     if (name.equals("tr")) {
                         tb.clearStackToTableBodyContext();
@@ -1055,7 +1055,7 @@ enum HtmlTreeBuilderState {
                         return anythingElse(t, tb);
                     break;
                 case EndTag:
-                    Token.EndTag endTag = t.asEndTag();
+                    EndTag endTag = t.asEndTag();
                     name = endTag.name();
                     if (StringUtil.in(name, "tbody", "tfoot", "thead")) {
                         if (!tb.inTableScope(name)) {
@@ -1098,7 +1098,7 @@ enum HtmlTreeBuilderState {
     InRow {
         boolean process(Token t, HtmlTreeBuilder tb) {
             if (t.isStartTag()) {
-                Token.StartTag startTag = t.asStartTag();
+                TokenStartTag startTag = t.asStartTag();
                 String name = startTag.name();
 
                 if (StringUtil.in(name, "th", "td")) {
@@ -1112,7 +1112,7 @@ enum HtmlTreeBuilderState {
                     return anythingElse(t, tb);
                 }
             } else if (t.isEndTag()) {
-                Token.EndTag endTag = t.asEndTag();
+                EndTag endTag = t.asEndTag();
                 String name = endTag.name();
 
                 if (name.equals("tr")) {
@@ -1159,7 +1159,7 @@ enum HtmlTreeBuilderState {
     InCell {
         boolean process(Token t, HtmlTreeBuilder tb) {
             if (t.isEndTag()) {
-                Token.EndTag endTag = t.asEndTag();
+                EndTag endTag = t.asEndTag();
                 String name = endTag.name();
 
                 if (StringUtil.in(name, "td", "th")) {
@@ -1217,7 +1217,7 @@ enum HtmlTreeBuilderState {
         boolean process(Token t, HtmlTreeBuilder tb) {
             switch (t.type) {
                 case Character:
-                    Token.Character c = t.asCharacter();
+                    TokenCharacter c = t.asCharacter();
                     if (c.getData().equals(nullString)) {
                         tb.error(this);
                         return false;
@@ -1232,7 +1232,7 @@ enum HtmlTreeBuilderState {
                     tb.error(this);
                     return false;
                 case StartTag:
-                    Token.StartTag start = t.asStartTag();
+                    TokenStartTag start = t.asStartTag();
                     String name = start.name();
                     if (name.equals("html"))
                         return tb.process(start, InBody);
@@ -1261,7 +1261,7 @@ enum HtmlTreeBuilderState {
                     }
                     break;
                 case EndTag:
-                    Token.EndTag end = t.asEndTag();
+                    EndTag end = t.asEndTag();
                     name = end.name();
                     if (name.equals("optgroup")) {
                         if (tb.currentElement().nodeName().equals("option") && tb.aboveOnStack(tb.currentElement()) != null && tb.aboveOnStack(tb.currentElement()).nodeName().equals("optgroup"))
@@ -1357,7 +1357,7 @@ enum HtmlTreeBuilderState {
                 tb.error(this);
                 return false;
             } else if (t.isStartTag()) {
-                Token.StartTag start = t.asStartTag();
+                TokenStartTag start = t.asStartTag();
                 String name = start.name();
                 if (name.equals("html")) {
                     return tb.process(start, InBody);
@@ -1479,14 +1479,14 @@ enum HtmlTreeBuilderState {
         return true;
     }
 
-    private static void handleRcData(Token.StartTag startTag, HtmlTreeBuilder tb) {
+    private static void handleRcData(TokenStartTag startTag, HtmlTreeBuilder tb) {
         tb.insert(startTag);
         tb.tokeniser.transition(TokeniserState.Rcdata);
         tb.markInsertionMode();
         tb.transition(Text);
     }
 
-    private static void handleRawtext(Token.StartTag startTag, HtmlTreeBuilder tb) {
+    private static void handleRawtext(TokenStartTag startTag, HtmlTreeBuilder tb) {
         tb.insert(startTag);
         tb.tokeniser.transition(TokeniserState.Rawtext);
         tb.markInsertionMode();

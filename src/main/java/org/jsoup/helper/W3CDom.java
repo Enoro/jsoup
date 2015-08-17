@@ -16,6 +16,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
+import java.util.Iterator;
 import javax.xml.transform.TransformerException;
 
 /**
@@ -108,7 +109,10 @@ public class W3CDom {
         }
 
         private void copyAttributes(org.jsoup.nodes.Node source, Element el) {
-            for (Attribute attribute : source.attributes()) {
+            //for (Attribute attribute : source.attributes()) {
+            Iterator entries=source.attributes().iterator();  
+            while(entries.hasNext()){
+                Attribute attribute=(Attribute)entries.next();
                 el.setAttribute(attribute.getKey(), attribute.getValue());
             }
         }
